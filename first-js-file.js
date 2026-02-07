@@ -51,7 +51,6 @@ function ExtractGrid(imageSelector, thumbURL, imageURL) {
     // 1. Create the container DIV
     const container = document.createElement('div');
 
-    // 2. Style the container as a Grid
     Object.assign(container.style, {
         position: 'fixed',
         top: '10px',
@@ -64,41 +63,66 @@ function ExtractGrid(imageSelector, thumbURL, imageURL) {
         padding: '10px',
         zIndex: '10000',
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)', // 3 columns
-        gap: '10px',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '15px', // Increased gap to fit the buttons better
         borderRadius: '8px',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+        fontFamily: 'sans-serif'
     });
 
-    // 3. Find images ending in /270w.jpg
     const images = document.querySelectorAll(imageSelector);
 
     images.forEach(img => {
         const lowResUrl = img.src;
-        // 4. Change 270w.jpg to 1080w.jpg for the href
         const highResUrl = lowResUrl.replace(thumbURL, imageURL);
 
-        // 5. Create the Link
+        // 1. Create a Cell Wrapper for the image + button
+        const cell = document.createElement('div');
+        cell.style.textAlign = 'center';
+
+        // 2. Create the Link/Thumbnail
         const link = document.createElement('a');
         link.href = highResUrl;
-        link.target = '_blank'; // Open in new tab
-        link.style.display = 'block';
+        link.target = '_blank';
 
-        // 6. Create a thumbnail for the link
         const thumb = document.createElement('img');
         thumb.src = lowResUrl;
         Object.assign(thumb.style, {
             width: '100%',
             height: 'auto',
             borderRadius: '4px',
-            border: '1px solid #ccc'
+            border: '1px solid #ccc',
+            display: 'block'
         });
 
+        // 3. Create the "Log" Button
+        const logBtn = document.createElement('button');
+        logBtn.textContent = 'Copy';
+        Object.assign(logBtn.style, {
+            marginTop: '5px',
+            fontSize: '10px',
+            width: '100%',
+            cursor: 'pointer',
+            padding: '2px 0',
+            backgroundColor: '#eee',
+            border: '1px solid #999',
+            borderRadius: '3px'
+        });
+
+        // The Action: console.log the href
+        logBtn.onclick = (e) => {
+            e.preventDefault(); // Prevents the link from opening if the button is inside
+            console.log(highResUrl);
+        };
+
+        // Assemble the cell
         link.appendChild(thumb);
-        container.appendChild(link);
+        cell.appendChild(link);
+        cell.appendChild(logBtn);
+
+        container.appendChild(cell);
     });
 
-    // 7. Append to body
     if (images.length > 0) {
         document.body.appendChild(container);
     } else {
