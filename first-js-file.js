@@ -50,6 +50,7 @@ function showToast(message) {
 function ExtractGrid(imageSelector, thumbURL, imageURL) {
     // 1. Create the container DIV
     const container = document.createElement('div');
+    container.id = 'MyEsGrid';
 
     Object.assign(container.style, {
         position: 'fixed',
