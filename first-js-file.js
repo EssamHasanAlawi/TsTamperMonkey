@@ -112,7 +112,8 @@ function ExtractGrid(imageSelector, thumbURL, imageURL) {
         // The Action: console.log the href
         logBtn.onclick = (e) => {
             e.preventDefault(); // Prevents the link from opening if the button is inside
-            console.log(highResUrl);
+            copyTextToClipboard(highResUrl);
+            showToast('Copied');
         };
 
         // Assemble the cell
